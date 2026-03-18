@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+<header class ="p-3 text-white text-center">
+
+<h2>E-Learning Platform</h2>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="dashboard.html">Dashboard</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="courses.html">Courses</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="quiz.html">Quiz</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="profile.html">Profile</a>
+</li>
+
+</ul>
+
+</div>
+</nav>
+
+<div class="container mt-2">
+<p><a href="dashboard.html">Home</a> > Dashboard</p>
+</div>
+
+<main class="container mt-4">
+
+<div class="row">
+
+
+<div class="col-md-8">
+
+<h4>Courses Overview</h4>
+
+<table class="table table-bordered table-striped mt-3">
+<thead>
+<tr>
+<th>Course</th>
+<th>Lessons</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="dashboardTable"></tbody>
+
+</table>
+
+</div>
+
+<div class="col-md-4">
+
+<h4>Learning Progress</h4>
+
+<div class="card p-3 shadow-sm">
+
+<progress id="progressBar" value="0" max="100"></progress>
+
+<p id="progressText" class="mt-2"></p>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+<footer class="text-center mt-4 p-3 footer">
+© 2026 E-learning Platform
+</footer>
+
+<script src="courses.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+let table = document.getElementById("dashboardTable");
+
+const courses = [
+"JavaScript Basics",
+"HTML & CSS",
+"React Fundamentals",
+"C# Programming",
+"SQL Database",
+"Angular",
+"Python"
+];
+
+let completed = JSON.parse(localStorage.getItem("completedCourses")) || [];
+
+courses.forEach(course => {
+
+let row = document.createElement("tr");
+
+let name = `<td>${course}</td>`;
+let lessons = `<td>4</td>`;
+let status = completed.includes(course) ? 
+"<td class='text-success'>Completed</td>" :
+"<td class='text-warning'>Pending</td>";
+
+row.innerHTML = name + lessons + status;
+
+table.appendChild(row);
+
+});
+
+// ✅ PROGRESS BAR
+let totalCourses = courses.length;
+
+let percentage = Math.min((completed.length / totalCourses) * 100, 100);
+
+let progressBar = document.getElementById("progressBar");
+
+progressBar.value = percentage;
+
+document.getElementById("progressText").innerText =
+Math.round(percentage) + "% Completed";
+
+// green color
+progressBar.style.accentColor = "green";
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Profile</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+<header class=" p-3 text-white text-center">
+
+<h2>Learner Profile</h2>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="dashboard.html">Dashboard</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="courses.html">Courses</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="quiz.html">Quiz</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="profile.html">Profile</a>
+</li>
+
+</ul>
+
+</div>
+</nav>
+
+<div class="container mt-2">
+<p><a href="dashboard.html">Home</a> > Profile</p>
+</div>
+
+<main class="container mt-4">
+
+<div class="row g-4">
+
+<div class="col-md-4">
+<div class="card p-3 shadow-sm">
+
+<h5>👤 Learner Details</h5>
+
+
+<input type="text" id="nameInput" class="form-control mb-2" placeholder="Enter Name">
+
+<input type="email" id="emailInput" class="form-control mb-2" placeholder="Enter Email">
+
+<button class="btn btn-primary mb-3" onclick="saveUser()">Save</button>
+
+<hr>
+
+
+<p><strong>Name:</strong> <span id="displayName"></span></p>
+<p><strong>Email:</strong> <span id="displayEmail"></span></p>
+<p><strong>Learning Path:</strong> Frontend Development</p>
+
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-3 shadow-sm text-center" id="performanceCard">
+<h5>📊 Your Performance</h5>
+<p id="score"></p>
+<p id="percentage"></p>
+<p id="grade"></p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-3 shadow-sm">
+<h5>📚 Completed Courses</h5>
+<ul id="completedList" class="list-group list-group-flush"></ul>
+</div>
+</div>
+
+</div>
+
+</main>
+
+<footer class="text-center mt-4 p-3 footer">
+© 2026 E-learning Platform
+</footer>
+
+<script>
+
+let score = localStorage.getItem("quizScore");
+
+let total = 10;
+
+let percentageText = document.getElementById("percentage");
+let gradeText = document.getElementById("grade");
+let scoreText = document.getElementById("score");
+let card = document.getElementById("performanceCard");
+
+if(score){
+
+let percentage = Math.round((score / total) * 100);
+
+scoreText.innerText = "Score: " + score + " / " + total;
+percentageText.innerText = "Percentage: " + percentage + "%";
+
+if(score <= 3){
+gradeText.innerText = "❌ Need Improvement";
+card.classList.add("bg-danger","text-white");
+}
+else if(score >= 7){
+gradeText.innerText = "✅ Great Job!";
+card.classList.add("bg-success","text-white");
+}
+else{
+gradeText.innerText = "🙂 Average";
+card.classList.add("bg-warning");
+}
+
+}else{
+scoreText.innerText = "No quiz attempted yet";
+}
+
+function saveUser(){
+
+let name = document.getElementById("nameInput").value;
+let email = document.getElementById("emailInput").value;
+
+localStorage.setItem("userName", name);
+localStorage.setItem("userEmail", email);
+
+document.getElementById("displayName").innerText = name;
+document.getElementById("displayEmail").innerText = email;
+
+}
+
+window.onload = function(){
+
+let savedName = localStorage.getItem("userName");
+let savedEmail = localStorage.getItem("userEmail");
+
+if(savedName){
+document.getElementById("displayName").innerText = savedName;
+}
+
+if(savedEmail){
+document.getElementById("displayEmail").innerText = savedEmail;
+}
+
+}
+
+let courses = JSON.parse(localStorage.getItem("completedCourses")) || [];
+
+courses = [...new Set(courses)];
+
+let list = document.getElementById("completedList");
+
+if(courses.length > 0){
+
+courses.forEach(function(course){
+
+let li = document.createElement("li");
+li.className = "list-group-item";
+li.textContent = "✔ " + course;
+
+list.appendChild(li);
+
+});
+
+}else{
+
+list.innerHTML = "<li>No courses completed yet</li>";
+
+}
+
+</script>
+
+</body>
+</html>
